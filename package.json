@@ -1,0 +1,22 @@
+{
+  "name": "ssb-start",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dan-mi-sun/ssb-start.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dan-mi-sun/ssb-start/issues"
+  },
+  "homepage": "https://github.com/dan-mi-sun/ssb-start#readme",
+  "dependencies": {
+    "ssb-client": "^4.6.0"
+  }
+}
