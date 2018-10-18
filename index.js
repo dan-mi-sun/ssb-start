@@ -15,7 +15,7 @@ connection(function (error, server) {
   }
   pull(
     server.query.read(opts), // the source
-    pull.filter(msg => msg.value.content.type === 'post'), // filter 'through'
-    pull.collect(onDone) // the sink
+    pull.filter(msg => msg.value.content.type === 'post'), // filter 'through' other throughs pull.map, also asyncMap & paraMap
+    pull.collect(onDone) // the sink, onDone is inMemory, pull.drain gives each result as it comes down the pipe use with console.log()
   )
 })
