@@ -23,13 +23,22 @@ connection(function (error, server) {
             }
           }
         }
+      }, {
+        //defining new object which has keys, value is from the filter (not actually though it's the Msg.object which we got, we're plucking the things we want from that object)
+        $map: {
+          author: ['value', 'author'],
+          text: ['value', 'content', 'text'],
+          timestamp: ['value', 'timestamp'],
+          // key: ['key'],
+          // value: ['value']
+        }
       }
     ]
   }
 
   var onDone = function (error, results) {
-    results.forEach(msg => {
-      console.log(msg.value.content)
+    results.forEach(result => {
+      console.log(result)
       console.log('----')
     })
 
