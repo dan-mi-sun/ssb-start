@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/dan-mi-sun/ssb-start#readme",
   "dependencies": {
+    "pull-paramap": "^1.2.2",
     "pull-stream": "^3.6.9",
     "ssb-client": "^4.6.0"
   },
