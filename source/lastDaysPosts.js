@@ -9,7 +9,7 @@ module.exports = function lastDaysPosts (server) {
         $filter: {
           value: {
             timestamp: {
-              $gte: Number(now) - 24*HOUR,
+              $gte: Number(now) - 24 * HOUR,
               $lt: Number(now)
             },
             content: {
@@ -18,11 +18,11 @@ module.exports = function lastDaysPosts (server) {
           }
         }
       }, {
-        //defining new object which has keys, value is from the filter (not actually though it's the Msg.object which we got, we're plucking the things we want from that object)
+        // defining new object which has keys, value is from the filter (not actually though it's the Msg.object which we got, we're plucking the things we want from that object)
         $map: {
           author: ['value', 'author'],
           text: ['value', 'content', 'text'],
-          timestamp: ['value', 'timestamp'],
+          timestamp: ['value', 'timestamp']
           // key: ['key'],
           // value: ['value']
         }
