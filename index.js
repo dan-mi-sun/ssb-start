@@ -6,44 +6,73 @@ var html = require('yo-yo')
 var lastDaysPosts = require('./source/lastDaysPosts')
 var getName = require('./async/getname')
 
-var app = html`
-<h1>Loading</h1>
-`
-document.body.appendChild(app)
+// make an app layout which has:
+//   - navigation
+//   - results
+//
+// make the results dependent on a state variable
+//
+// when page initially loads get it to run first time
+//
+// add onclick in navigation which gets it run update
 
-function render () {
-  html.update(app, newView)
+
+var state = {
+  daysAgo: 0
 }
 
+var resultsEl = html`
+  <div>Loading...</div>
+`
+
+function App (server) {
+  return html`
+    <div className='app'>
+      <h1>Days Posts</h1>
+      <section>
+        <button onclick=${() => changeDate(-1)}> Back </ button>
+        <button onclick=${() => changeDate(+1)}> Fwd </ button>
+      </section>
+      ${resultsEl}
+    </div>
+  `
+
+  function changeDate (step) {
+    state.daysAgo = state.daysAgo + step
+    renderDay(server, state)
+  }
+}
+
+
 connection(function (error, server) {
-  // anon fn cb within connection
   if (error) console.log(`This is the error: ${error}`)
 
-  console.time('lastDay')
-  var onDone = function (error, results) {
-    // results.forEach(result => {
-      // console.log(result)
-      // console.log('----')
-    // })
+  document.body.appendChild(App(server))
 
-    var newView = html`
+  renderDay(server, state)
+})
+
+function renderDay (server, state) {
+  html.update(resultsEl, html`<div>Loading... </div>`)
+  
+  pull(
+    lastDaysPosts(server, state.daysAgo),
+    paraMap(getName(server), 50),
+    pull.collect((error, results) => {
+      if (error) console.log(error)
+
+      html.update(resultsEl, Posts(results))
+    })
+  )
+}
+
+function Posts (results) {
+  return html`
     <div className='app'>
       ${results.map(Post)}
     </div>
-    `
-    html.update(app, newView)
-
-    console.log(results.length)
-    console.timeEnd('lastDay')
-    server.close()
-  }
-
-  pull(
-    lastDaysPosts(server),
-    paraMap(getName(server), 50),
-    pull.collect(onDone) // the sink, onDone is inMemory, pull.drain gives each result as it comes down the pipe use with console.log()
-  )
-})
+  `
+}
 
 function Post (postData) {
 //could do some logic and error handelling here. pospi doesn't have an author name e.g. so we could give a default

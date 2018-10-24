@@ -1,6 +1,7 @@
 var HOUR = 3600000
+var DAY = 24 * HOUR
 
-module.exports = function lastDaysPosts (server) {
+module.exports = function lastDaysPosts (server, daysAgo = 0) {
   var now = new Date()
   var opts = {
     reverse: true,
@@ -9,8 +10,8 @@ module.exports = function lastDaysPosts (server) {
         $filter: {
           value: {
             timestamp: {
-              $gte: Number(now) - 24 * HOUR,
-              $lt: Number(now)
+              $gte: Number(now) - DAY + daysAgo * DAY,
+              $lt: Number(now) + daysAgo * DAY
             },
             content: {
               type: 'post'
