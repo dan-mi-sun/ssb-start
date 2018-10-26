@@ -38,11 +38,11 @@ module.exports = function App (server) {
 
 function renderDay (server, state) {
   html.update(resultsEl, html`<div>Loading... </div>`)
-  
+
   pull(
     lastDaysPosts(server, state.daysAgo),
     paraMap(getName(server), 50),
-    paraMap(getBacklinks(server), 50),
+    // paraMap(getBacklinks(server), 50),
     pull.collect((error, results) => {
       if (error) console.log(error)
 

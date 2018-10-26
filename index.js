@@ -8,4 +8,3 @@ connection(function (error, server) {
   var app = App(server)
   document.body.appendChild(app)
 })
-
